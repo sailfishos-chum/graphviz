@@ -36,6 +36,9 @@ RpmLintIgnore:
   - 'invalid-url'
 Macros:
   - 'pluginsver;6'
+  - 'vermaj;8'
+  - 'vermin;1'
+  - 'vermic;0'
 PkgBR:
   - python3-rpm-macros
   - m4
@@ -65,7 +68,7 @@ PkgConfigBR:
   - freetype2
   - pango
   - pangocairo
-#Configure: none
+Configure: reconfigure
 ConfigOptions:
   - '--enable-ltdl'
   - '--without-libgd'

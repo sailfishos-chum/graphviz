@@ -8,6 +8,9 @@ Name:       graphviz
 # >> macros
 # << macros
 %define pluginsver 6
+%define vermaj 8
+%define vermin 1
+%define vermic 0
 
 Summary:    Greph visualization
 Version:    8.1.0
@@ -124,16 +127,20 @@ Some demo graphs for graphviz.
 
 %build
 # >> build pre
-touch .git
-# pre-add missing files:
-mkdir -p libltdl
-touch libltdl/COPYING.LIB
-touch libltdl/README
-# run the autogen script
-./autogen.sh || :
+sed -i '3,15d' autogen.sh
+export GRAPHVIZ_VERSION_MAJOR=%{vermaj}
+export GRAPHVIZ_VERSION_MINOR=%{vermin}
+export GRAPHVIZ_VERSION_PATCH=%{vermic}
+export GRAPHVIZ_VERSION_DATE=$(date -I)
+export GRAPHVIZ_CHANGE_DATE=$(stat -c %y .)
+export GRAPHVIZ_AUTHOR_NAME="SailfishOS"
+export GRAPHVIZ_AUTHOR_EMAIL="nemo@$HOSTNAME"
+./autogen.sh
+# autoreconf -v --install --force || exit 1
+# touch config/depcomp
 # << build pre
 
-%configure --disable-static \
+%reconfigure --disable-static \
     --enable-ltdl \
     --without-libgd \
     --without-gdk \
