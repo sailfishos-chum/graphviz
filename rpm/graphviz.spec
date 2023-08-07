@@ -117,6 +117,7 @@ Some demo graphs for graphviz.
 
 %build
 # >> build pre
+./autogen.sh
 # << build pre
 
 %configure --disable-static \
