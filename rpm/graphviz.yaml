@@ -39,6 +39,8 @@ Macros:
 PkgBR:
   - python3-rpm-macros
   - libtool-ltdl-devel
+  - git
+  - python3-base
   # qt5-qmake
   # perl-devel # DoD?
   - python3-devel
