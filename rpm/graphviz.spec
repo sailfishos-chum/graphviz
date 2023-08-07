@@ -27,6 +27,7 @@ BuildRequires:  pkgconfig(freetype2)
 BuildRequires:  pkgconfig(pango)
 BuildRequires:  pkgconfig(pangocairo)
 BuildRequires:  python3-rpm-macros
+BuildRequires:  m4
 BuildRequires:  autoconf
 BuildRequires:  automake
 BuildRequires:  libtool-ltdl
@@ -124,7 +125,12 @@ Some demo graphs for graphviz.
 %build
 # >> build pre
 touch .git
-./autogen.sh
+# pre-add missing files:
+mkdir -p libltdl
+touch libltdl/COPYING.LIB
+touch libltdl/README
+# run the autogen script
+./autogen.sh || :
 # << build pre
 
 %configure --disable-static \
