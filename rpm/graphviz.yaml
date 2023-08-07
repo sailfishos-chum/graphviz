@@ -45,6 +45,7 @@ PkgBR:
   - autoconf
   - automake
   - libtool-ltdl # includes COPYING.LIB
+  - libtool-doc # includes README
   - libtool-ltdl-devel
   - git
   - python3-base

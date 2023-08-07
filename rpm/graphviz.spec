@@ -136,8 +136,6 @@ export GRAPHVIZ_CHANGE_DATE=$(stat -c %y .)
 export GRAPHVIZ_AUTHOR_NAME="SailfishOS"
 export GRAPHVIZ_AUTHOR_EMAIL="nemo@$HOSTNAME"
 ./autogen.sh
-# autoreconf -v --install --force || exit 1
-# touch config/depcomp
 # << build pre
 
 %reconfigure --disable-static \
