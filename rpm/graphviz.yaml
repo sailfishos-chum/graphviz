@@ -38,6 +38,9 @@ Macros:
   - 'pluginsver;6'
 PkgBR:
   - python3-rpm-macros
+  - autoconf
+  - automake
+  - libtool-ltdl # includes COPYING.LIB
   - libtool-ltdl-devel
   - git
   - python3-base
