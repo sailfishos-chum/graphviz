@@ -1,0 +1,158 @@
+Name: graphviz
+Summary: Greph visualization
+Version: 8.1.0
+Release: 0
+Group: Applications
+License: EPL-1.0
+URL: https://www.graphviz.org/
+SCM: https://gitlab.com/graphviz/graphviz
+Sources:
+    - '%{name}-%{version}.tar.xz'
+Description: |
+
+    A collection of tools for the manipulation and layout of graphs (as in
+    nodes and edges, not as in bar-charts).
+
+    %if "%{?vendor}" == "chum"
+    Title: Graphviz
+    PackagedBy: nephros
+    Categories:
+     - Library
+    Custom:
+      Repo: https://gitlab.com/graphviz/graphviz
+      PackagingRepo: https://github.com/sailfishos-chum/graphviz
+    PackageIcon: %{url}/master/icons/%{name}.svg
+    Links:
+      Homepage: %{url}
+      Help: %{url}/discussions
+      Bugtracker: %{url}/issues
+      Donation: https://openrepos.net/donate
+    %endif
+
+#SetupOptions: -q -n %{name}-%{version}/upstream
+RpmLintIgnore:
+  - 'summary-too-long'
+  - 'no-changelogname-tag'
+  - 'invalid-url'
+Macros:
+  - 'pluginsver;6'
+PkgBR:
+  - python3-rpm-macros
+  # qt5-qmake
+  # perl-devel # DoD?
+  - python3-devel
+  # ruby-devel # DoD?
+  - gmp-devel
+  # gdk-pixbuf-devel
+  - librsvg-devel
+  - libwebp-devel
+  - swig
+PkgConfigBR:
+  # Qt5Core
+  # Qt5Gui
+  - zlib
+  - poppler
+  # poppler-glib # DoD
+  - libpng
+  - lua
+  - freetype2
+  - pango
+  - pangocairo
+#Configure: none
+ConfigOptions:
+  - '--enable-ltdl'
+  - '--without-libgd'
+  - '--without-gdk'
+  - '--without-gtk'
+  - '--without-gtkgl'
+  - '--without-gtkglext'
+  - '--without-qt'
+  - '--without-smyrna'
+  - '--without-x'
+  - '--enable-perl'
+  - '--enable-python3'
+  - '--enable-ruby'
+  - '--disable-d'
+  - '--disable-go'
+  - '--disable-guile'
+  - '--disable-java'
+  - '--disable-javascript'
+  - '--disable-ocaml'
+  - '--disable-php'
+  - '--disable-python'
+  - '--disable-r'
+  - '--disable-sharp'
+  - '--disable-tcl'
+Requires:
+  - '%{name}-plugins-core = %{version}-%{release}'
+Builder: make
+NoIconCache: true
+Files:
+  - '%license COPYING'
+  - '%{_bindir}/*'
+  - '%dir %{_datadir}/%{name}'
+  - '%{_datadir}/%{name}/gvpr'
+  - '%exclude %{_datadir}/%{name}/demo'
+  - '%ghost %{_libdir}/graphviz/config%{pluginsver}'
+  # in the python package
+  - '%exclude %{python3_sitearch}/*.so'
+  - '%exclude %{python3_sitearch}/__pycache__'
+
+SubPackages:
+    - Name:  devel
+      Summary:  Development Files for %{name}
+      Group: Development
+      Requires:
+        - '%{name}-libs = %{version}-%{release}'
+      Files:
+        - '%{_includedir}/*'
+        - '%{_libdir}/*.so'
+        - '%{_prefix}/%{_lib}/pkgconfig/*.pc'
+    - Name: python
+      Group:          Applications/Multimedia
+      Summary:        Python extension for %{name}
+      Requires:
+        - python3-base
+      Files:
+        - '%{python3_sitearch}/*.so'
+        - '%{python3_sitearch}/*.py'
+        - '%{_libdir}/%{name}/python3'
+    - Name: plugins-core
+      Group:          Applications/Multimedia
+      Summary:        Core plugins for %{name}
+      Files:
+        - '%dir %{_libdir}/%{name}'
+        - '%{_libdir}/graphviz/libgvplugin_core.so.*'
+        - '%{_libdir}/graphviz/libgvplugin_dot_layout.so.*'
+        - '%{_libdir}/graphviz/libgvplugin_neato_layout.so.*'
+    - Name: plugins-misc
+      Group:          Applications/Multimedia
+      Summary:        Misc plugins for %{name}
+      Files:
+        - '%dir %{_libdir}/%{name}'
+        - '%{_libdir}/%{name}/libgvplugin*.so.*'
+        - '%exclude %{_libdir}/graphviz/libgvplugin_core.so.*'
+        - '%exclude %{_libdir}/graphviz/libgvplugin_dot_layout.so.*'
+        - '%exclude %{_libdir}/graphviz/libgvplugin_neato_layout.so.*'
+    - Name: libs
+      Group:          Applications/Multimedia
+      Summary:        Libraries for %{name}
+      Files:
+        - '%{_libdir}/libcdt.so.*'
+        - '%{_libdir}/libcgraph.so.*'
+        - '%{_libdir}/libgvc.so.*'
+        - '%{_libdir}/libgvpr.so.*'
+        - '%{_libdir}/libpathplan.so.*'
+        - '%{_libdir}/libxdot.so.4*'
+        - '%{_libdir}/liblab_gamut.so.*'
+        - '%exclude %{_libdir}/graphviz/*'
+    - Name: graphs
+      Group:          Applications/Multimedia
+      Summary:        Demo graphs for %{name}
+      BuildArch:      noarch
+      Description: |
+           Some demo graphs for graphviz.
+      Files:
+        - '%dir %{_datadir}/graphviz'
+        - '%{_datadir}/graphviz/graphs'
+        # '%{_datadir}/graphviz/examples'
