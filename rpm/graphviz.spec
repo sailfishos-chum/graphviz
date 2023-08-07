@@ -110,7 +110,7 @@ Some demo graphs for graphviz.
 
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -q -n %{name}-%{version}/upstream
 
 # >> setup
 # << setup
