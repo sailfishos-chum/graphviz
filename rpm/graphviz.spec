@@ -134,7 +134,8 @@ export GRAPHVIZ_VERSION_PATCH=%{vermic}
 export GRAPHVIZ_VERSION_DATE=$(date -I)
 export GRAPHVIZ_CHANGE_DATE=$(stat -c %y .)
 export GRAPHVIZ_AUTHOR_NAME="SailfishOS"
-export GRAPHVIZ_AUTHOR_EMAIL="nemo@$HOSTNAME"
+export GRAPHVIZ_AUTHOR_EMAIL="nemo@$HOST"
+export EXTRA_DIST=/usr/share/doc:/usr/share/licenses
 ./autogen.sh
 # << build pre
 
