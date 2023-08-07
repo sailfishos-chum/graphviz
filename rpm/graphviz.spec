@@ -27,6 +27,7 @@ BuildRequires:  pkgconfig(freetype2)
 BuildRequires:  pkgconfig(pango)
 BuildRequires:  pkgconfig(pangocairo)
 BuildRequires:  python3-rpm-macros
+BuildRequires:  libtool-ltdl-devel
 BuildRequires:  python3-devel
 BuildRequires:  gmp-devel
 BuildRequires:  librsvg-devel

@@ -38,6 +38,7 @@ Macros:
   - 'pluginsver;6'
 PkgBR:
   - python3-rpm-macros
+  - libtool-ltdl-devel
   # qt5-qmake
   # perl-devel # DoD?
   - python3-devel
