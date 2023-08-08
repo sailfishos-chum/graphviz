@@ -69,8 +69,19 @@ Summary:    Development Files for %{name}
 Group:      Development
 Requires:   %{name} = %{version}-%{release}
 Requires:   %{name}-libs = %{version}-%{release}
+Requires:   %{name}-cpp = %{version}-%{release}
 
 %description devel
+%{summary}.
+
+%package cpp
+Summary:    Python extension for %{name}
+Group:      Applications/Multimedia
+Requires:   %{name} = %{version}-%{release}
+Requires(post): /sbin/ldconfig
+Requires(postun): /sbin/ldconfig
+
+%description cpp
 %{summary}.
 
 %package python
@@ -94,6 +105,8 @@ Requires:   %{name} = %{version}-%{release}
 Summary:    Misc plugins for %{name}
 Group:      Applications/Multimedia
 Requires:   %{name} = %{version}-%{release}
+Requires(post): /sbin/ldconfig
+Requires(postun): /sbin/ldconfig
 
 %description plugins-misc
 %{summary}.
@@ -166,6 +179,10 @@ rm -rf %{_libdir}/graphviz/config%{pluginsver} || :
 LD_LIBRARY_PATH=%{_libdir} %{_bindir}/dot -c
 # << post
 
+%post cpp -p /sbin/ldconfig
+
+%postun cpp -p /sbin/ldconfig
+
 %post plugins-core
 # >> post plugins-core
 [ -x %{_bindir}/dot ] && LD_LIBRARY_PATH=%{_libdir} %{_bindir}/dot -c || :
@@ -180,11 +197,13 @@ fi
 # << postun plugins-core
 
 %post plugins-misc
+/sbin/ldconfig
 # >> post plugins-misc
 LD_LIBRARY_PATH=%{_libdir} %{_bindir}/dot -c || :
 # << post plugins-misc
 
 %postun plugins-misc
+/sbin/ldconfig
 # >> postun plugins-misc
 [ -x %{_bindir}/dot ] && LD_LIBRARY_PATH=%{_libdir} %{_bindir}/dot -c || :
 # << postun plugins-misc
@@ -210,6 +229,12 @@ LD_LIBRARY_PATH=%{_libdir} %{_bindir}/dot -c || :
 # >> files devel
 # << files devel
 
+%files cpp
+%defattr(-,root,root,-)
+%{_libdir}/*++*.so.*
+# >> files cpp
+# << files cpp
+
 %files python
 %defattr(-,root,root,-)
 %{python3_sitearch}/*.so
@@ -221,9 +246,9 @@ LD_LIBRARY_PATH=%{_libdir} %{_bindir}/dot -c || :
 %files plugins-core
 %defattr(-,root,root,-)
 %dir %{_libdir}/%{name}
-%{_libdir}/graphviz/libgvplugin_core.so.*
-%{_libdir}/graphviz/libgvplugin_dot_layout.so.*
-%{_libdir}/graphviz/libgvplugin_neato_layout.so.*
+%{_libdir}/%{name}/libgvplugin_core.so.*
+%{_libdir}/%{name}/libgvplugin_dot_layout.so.*
+%{_libdir}/%{name}/libgvplugin_neato_layout.so.*
 # >> files plugins-core
 # << files plugins-core
 
@@ -231,9 +256,10 @@ LD_LIBRARY_PATH=%{_libdir} %{_bindir}/dot -c || :
 %defattr(-,root,root,-)
 %dir %{_libdir}/%{name}
 %{_libdir}/%{name}/libgvplugin*.so.*
-%exclude %{_libdir}/graphviz/libgvplugin_core.so.*
-%exclude %{_libdir}/graphviz/libgvplugin_dot_layout.so.*
-%exclude %{_libdir}/graphviz/libgvplugin_neato_layout.so.*
+%{_libdir}/libgvplugin*.so.*
+%exclude %{_libdir}/%{name}/libgvplugin_core.so.*
+%exclude %{_libdir}/%{name}/libgvplugin_dot_layout.so.*
+%exclude %{_libdir}/%{name}/libgvplugin_neato_layout.so.*
 # >> files plugins-misc
 # << files plugins-misc
 
@@ -242,10 +268,8 @@ LD_LIBRARY_PATH=%{_libdir} %{_bindir}/dot -c || :
 %{_libdir}/libcdt.so.*
 %{_libdir}/libcgraph.so.*
 %{_libdir}/libgvc.so.*
-%{_libdir}/libgvpr.so.*
 %{_libdir}/libpathplan.so.*
 %{_libdir}/libxdot.so.4*
-%{_libdir}/liblab_gamut.so.*
 %exclude %{_libdir}/graphviz/*
 # >> files libs
 # << files libs
