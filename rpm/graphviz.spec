@@ -8,9 +8,6 @@ Name:       graphviz
 # >> macros
 # << macros
 %define pluginsver 6
-%define vermaj 8
-%define vermin 1
-%define vermic 0
 
 Summary:    Greph visualization
 Version:    8.1.0
@@ -23,6 +20,7 @@ Source100:  graphviz.yaml
 Source101:  graphviz-rpmlintrc
 Requires:   %{name}-plugins-core = %{version}-%{release}
 BuildRequires:  pkgconfig(zlib)
+BuildRequires:  pkgconfig(expat)
 BuildRequires:  pkgconfig(poppler)
 BuildRequires:  pkgconfig(libpng)
 BuildRequires:  pkgconfig(lua)
@@ -30,15 +28,16 @@ BuildRequires:  pkgconfig(freetype2)
 BuildRequires:  pkgconfig(pango)
 BuildRequires:  pkgconfig(pangocairo)
 BuildRequires:  python3-rpm-macros
-BuildRequires:  m4
-BuildRequires:  autoconf
-BuildRequires:  automake
-BuildRequires:  libtool-ltdl
+BuildRequires:  cmake
+BuildRequires:  git-core
+BuildRequires:  gzip
 BuildRequires:  libtool-ltdl-devel
-BuildRequires:  git
+BuildRequires:  bison
+BuildRequires:  flex
 BuildRequires:  python3-base
 BuildRequires:  python3-devel
 BuildRequires:  gmp-devel
+BuildRequires:  libjpeg-turbo-devel
 BuildRequires:  librsvg-devel
 BuildRequires:  libwebp-devel
 BuildRequires:  swig
@@ -127,42 +126,17 @@ Some demo graphs for graphviz.
 
 %build
 # >> build pre
-sed -i '3,15d' autogen.sh
-export GRAPHVIZ_VERSION_MAJOR=%{vermaj}
-export GRAPHVIZ_VERSION_MINOR=%{vermin}
-export GRAPHVIZ_VERSION_PATCH=%{vermic}
-export GRAPHVIZ_VERSION_DATE=$(date -I)
-export GRAPHVIZ_CHANGE_DATE=$(stat -c %y .)
-export GRAPHVIZ_AUTHOR_NAME="SailfishOS"
-export GRAPHVIZ_AUTHOR_EMAIL="nemo@$HOST"
-export EXTRA_DIST=/usr/share/doc:/usr/share/licenses
-./autogen.sh
 # << build pre
 
-%reconfigure --disable-static \
-    --enable-ltdl \
-    --without-libgd \
-    --without-gdk \
-    --without-gtk \
-    --without-gtkgl \
-    --without-gtkglext \
-    --without-qt \
-    --without-smyrna \
-    --without-x \
-    --enable-perl \
-    --enable-python3 \
-    --enable-ruby \
-    --disable-d \
-    --disable-go \
-    --disable-guile \
-    --disable-java \
-    --disable-javascript \
-    --disable-ocaml \
-    --disable-php \
-    --disable-python \
-    --disable-r \
-    --disable-sharp \
-    --disable-tcl
+%cmake .  \
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+    -DCMAKE_SKIP_RPATH:BOOL=OFF \
+    -Denable_ltdl=ON \
+    -Dwith_expat=ON \
+    -Dwith_gvedit=OFF \
+    -Dwith_zlib=ON \
+    -Duse_coverage=OFF \
+    -Dwith_cxx_api=ON
 
 make %{?_smp_mflags}
 
@@ -224,11 +198,7 @@ LD_LIBRARY_PATH=%{_libdir} %{_bindir}/dot -c || :
 %license COPYING
 %{_bindir}/*
 %dir %{_datadir}/%{name}
-%{_datadir}/%{name}/gvpr
-%exclude %{_datadir}/%{name}/demo
 %ghost %{_libdir}/graphviz/config%{pluginsver}
-%exclude %{python3_sitearch}/*.so
-%exclude %{python3_sitearch}/__pycache__
 # >> files
 # << files
 

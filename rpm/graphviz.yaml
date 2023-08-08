@@ -36,18 +36,14 @@ RpmLintIgnore:
   - 'invalid-url'
 Macros:
   - 'pluginsver;6'
-  - 'vermaj;8'
-  - 'vermin;1'
-  - 'vermic;0'
 PkgBR:
   - python3-rpm-macros
-  - m4
-  - autoconf
-  - automake
-  - libtool-ltdl # includes COPYING.LIB
-  - libtool-doc # includes README
+  - cmake
+  - git-core    # the git program
+  - gzip        # the program
   - libtool-ltdl-devel
-  - git
+  - bison
+  - flex
   - python3-base
   # qt5-qmake
   # perl-devel # DoD?
@@ -55,6 +51,7 @@ PkgBR:
   # ruby-devel # DoD?
   - gmp-devel
   # gdk-pixbuf-devel
+  - libjpeg-turbo-devel
   - librsvg-devel
   - libwebp-devel
   - swig
@@ -62,6 +59,7 @@ PkgConfigBR:
   # Qt5Core
   # Qt5Gui
   - zlib
+  - expat
   - poppler
   # poppler-glib # DoD
   - libpng
@@ -69,31 +67,48 @@ PkgConfigBR:
   - freetype2
   - pango
   - pangocairo
-Configure: reconfigure
+Configure: cmake
+#ConfigOptions:
+#  - '--enable-ltdl'
+#  - '--without-libgd'
+#  - '--without-gdk'
+#  - '--without-gtk'
+#  - '--without-gtkgl'
+#  - '--without-gtkglext'
+#  - '--without-qt'
+#  - '--without-smyrna'
+#  - '--without-x'
+#  - '--enable-perl'
+#  - '--enable-python3'
+#  - '--enable-ruby'
+#  - '--disable-d'
+#  - '--disable-go'
+#  - '--disable-guile'
+#  - '--disable-java'
+#  - '--disable-javascript'
+#  - '--disable-ocaml'
+#  - '--disable-php'
+#  - '--disable-python'
+#  - '--disable-r'
+#  - '--disable-sharp'
+#  - '--disable-tcl'
 ConfigOptions:
-  - '--enable-ltdl'
-  - '--without-libgd'
-  - '--without-gdk'
-  - '--without-gtk'
-  - '--without-gtkgl'
-  - '--without-gtkglext'
-  - '--without-qt'
-  - '--without-smyrna'
-  - '--without-x'
-  - '--enable-perl'
-  - '--enable-python3'
-  - '--enable-ruby'
-  - '--disable-d'
-  - '--disable-go'
-  - '--disable-guile'
-  - '--disable-java'
-  - '--disable-javascript'
-  - '--disable-ocaml'
-  - '--disable-php'
-  - '--disable-python'
-  - '--disable-r'
-  - '--disable-sharp'
-  - '--disable-tcl'
+  - '-DCMAKE_BUILD_TYPE=RelWithDebInfo'
+  - '-DCMAKE_SKIP_RPATH:BOOL=OFF' # try to fix linking errors
+  - '-Denable_ltdl=ON'
+  - '-Dwith_expat=ON'
+  # '-Dwith_digcola=OFF'
+  - '-Dwith_gvedit=OFF' # needs QtGui
+  # '-Dwith_ipsepcola=OFF'
+  # '-Dwith_ortho=ON'
+  # '-Dwith_sfdp=ON'
+  # '-Dwith_smyrna=OFF'
+  - '-Dwith_zlib=ON'
+  - '-Duse_coverage=OFF'
+  - '-Dwith_cxx_api=ON'
+  # '-Dwith_cxx_tests=OFF'
+
+
 Requires:
   - '%{name}-plugins-core = %{version}-%{release}'
 Builder: make
@@ -102,12 +117,12 @@ Files:
   - '%license COPYING'
   - '%{_bindir}/*'
   - '%dir %{_datadir}/%{name}'
-  - '%{_datadir}/%{name}/gvpr'
-  - '%exclude %{_datadir}/%{name}/demo'
+  # '%{_datadir}/%{name}/gvpr'
+  # '%exclude %{_datadir}/%{name}/demo'
   - '%ghost %{_libdir}/graphviz/config%{pluginsver}'
   # in the python package
-  - '%exclude %{python3_sitearch}/*.so'
-  - '%exclude %{python3_sitearch}/__pycache__'
+  # '%exclude %{python3_sitearch}/*.so'
+  # '%exclude %{python3_sitearch}/__pycache__'
 
 SubPackages:
     - Name:  devel
