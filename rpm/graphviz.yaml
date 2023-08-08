@@ -137,18 +137,18 @@ SubPackages:
         - '%{_prefix}/%{_lib}/pkgconfig/*.pc'
     - Name: cpp
       Group:          Applications/Multimedia
-      Summary:        Python extension for %{name}
+      Summary:        C++ extensions for %{name}
       Files:
         - '%{_libdir}/*++*.so.*'
-    - Name: python
-      Group:          Applications/Multimedia
-      Summary:        Python extension for %{name}
-      Requires:
-        - python3-base
-      Files:
-        - '%{python3_sitearch}/*.so'
-        - '%{python3_sitearch}/*.py'
-        - '%{_libdir}/%{name}/python3'
+#    - Name: python
+#      Group:          Applications/Multimedia
+#      Summary:        Python extensions for %{name}
+#      Requires:
+#        - python3-base
+#      Files:
+#        # '%{python3_sitearch}/*.so'
+#        # '%{python3_sitearch}/*.py'
+#        # '%{_libdir}/%{name}/python3'
     - Name: plugins-core
       Group:          Applications/Multimedia
       Summary:        Core plugins for %{name}
@@ -157,6 +157,7 @@ SubPackages:
         - '%{_libdir}/%{name}/libgvplugin_core.so.*'
         - '%{_libdir}/%{name}/libgvplugin_dot_layout.so.*'
         - '%{_libdir}/%{name}/libgvplugin_neato_layout.so.*'
+        - '%{_libdir}/%{name}/libgvplugin_pango.so.*'
     - Name: plugins-misc
       Group:          Applications/Multimedia
       Summary:        Misc plugins for %{name}
@@ -168,6 +169,7 @@ SubPackages:
         - '%exclude %{_libdir}/%{name}/libgvplugin_core.so.*'
         - '%exclude %{_libdir}/%{name}/libgvplugin_dot_layout.so.*'
         - '%exclude %{_libdir}/%{name}/libgvplugin_neato_layout.so.*'
+        - '%exclude %{_libdir}/%{name}/libgvplugin_pango.so.*'
     - Name: libs
       Group:          Applications/Multimedia
       Summary:        Libraries for %{name}
@@ -180,13 +182,12 @@ SubPackages:
         - '%{_libdir}/libxdot.so.4*'
         # '%{_libdir}/liblab_gamut.so.*'
         - '%exclude %{_libdir}/graphviz/*'
-    - Name: graphs
+    - Name: demo-graphs
       Group:          Applications/Multimedia
       Summary:        Demo graphs for %{name}
       BuildArch:      noarch
       Description: |
            Some demo graphs for graphviz.
       Files:
-        - '%dir %{_datadir}/graphviz'
         - '%{_datadir}/graphviz/graphs'
         # '%{_datadir}/graphviz/examples'

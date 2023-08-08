@@ -75,22 +75,13 @@ Requires:   %{name}-cpp = %{version}-%{release}
 %{summary}.
 
 %package cpp
-Summary:    Python extension for %{name}
+Summary:    C++ extensions for %{name}
 Group:      Applications/Multimedia
 Requires:   %{name} = %{version}-%{release}
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
 %description cpp
-%{summary}.
-
-%package python
-Summary:    Python extension for %{name}
-Group:      Applications/Multimedia
-Requires:   %{name} = %{version}-%{release}
-Requires:   python3-base
-
-%description python
 %{summary}.
 
 %package plugins-core
@@ -121,13 +112,13 @@ Requires(postun): /sbin/ldconfig
 %description libs
 %{summary}.
 
-%package graphs
+%package demo-graphs
 Summary:    Demo graphs for %{name}
 Group:      Applications/Multimedia
 BuildArch:  noarch
 Requires:   %{name} = %{version}-%{release}
 
-%description graphs
+%description demo-graphs
 Some demo graphs for graphviz.
 
 
@@ -235,20 +226,13 @@ LD_LIBRARY_PATH=%{_libdir} %{_bindir}/dot -c || :
 # >> files cpp
 # << files cpp
 
-%files python
-%defattr(-,root,root,-)
-%{python3_sitearch}/*.so
-%{python3_sitearch}/*.py
-%{_libdir}/%{name}/python3
-# >> files python
-# << files python
-
 %files plugins-core
 %defattr(-,root,root,-)
 %dir %{_libdir}/%{name}
 %{_libdir}/%{name}/libgvplugin_core.so.*
 %{_libdir}/%{name}/libgvplugin_dot_layout.so.*
 %{_libdir}/%{name}/libgvplugin_neato_layout.so.*
+%{_libdir}/%{name}/libgvplugin_pango.so.*
 # >> files plugins-core
 # << files plugins-core
 
@@ -260,6 +244,7 @@ LD_LIBRARY_PATH=%{_libdir} %{_bindir}/dot -c || :
 %exclude %{_libdir}/%{name}/libgvplugin_core.so.*
 %exclude %{_libdir}/%{name}/libgvplugin_dot_layout.so.*
 %exclude %{_libdir}/%{name}/libgvplugin_neato_layout.so.*
+%exclude %{_libdir}/%{name}/libgvplugin_pango.so.*
 # >> files plugins-misc
 # << files plugins-misc
 
@@ -274,9 +259,8 @@ LD_LIBRARY_PATH=%{_libdir} %{_bindir}/dot -c || :
 # >> files libs
 # << files libs
 
-%files graphs
+%files demo-graphs
 %defattr(-,root,root,-)
-%dir %{_datadir}/graphviz
 %{_datadir}/graphviz/graphs
-# >> files graphs
-# << files graphs
+# >> files demo-graphs
+# << files demo-graphs
